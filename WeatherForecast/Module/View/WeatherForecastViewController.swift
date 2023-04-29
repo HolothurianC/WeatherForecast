@@ -14,18 +14,13 @@ class WeatherForecastViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewModel()
-        configureUI()
     }
-    
-    private func configureUI() {
+    override func loadView() {
         title = "Weather Forecast"
-        view.backgroundColor = .white
         weatherView = WeatherContentView(frame: .zero)
-        view.addSubview(weatherView!)
-        weatherView?.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        view = weatherView
     }
+
     private func configureViewModel() {
         vm = WeatherViewModel(lives: { lives in
             
@@ -33,7 +28,7 @@ class WeatherForecastViewController: UIViewController {
             self?.weatherView?.vm = self?.vm
             self?.weatherView?.reloadData()
             self?.weatherView?.leftTableView.selectRow(at: IndexPath(row: 0, section: 0),
-                                                      animated: true,
+                                                      animated: false,
                                                       scrollPosition: .top)
         }, failure: { errorMsg in
             PrintLog(message: errorMsg)

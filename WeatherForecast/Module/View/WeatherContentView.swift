@@ -12,6 +12,7 @@ class WeatherContentView: UIView {
     let equalWidth             = ScreenWidth/4.0
     let TableCellIdentifier    = "TableViewCellIdentifier"
     let ForecastCellIdentifier = "ForecastCellIdentifier"
+    let ForecastHeaderIdentier = "ForecastHeaderIdentier"
     var leftTableView          = UITableView(frame: .zero, style: .plain)
     var rightTableView         = UITableView(frame: .zero, style: .plain)
     
@@ -38,7 +39,7 @@ class WeatherContentView: UIView {
         
         leftTableView.register(UITableViewCell.self, forCellReuseIdentifier: TableCellIdentifier)
         rightTableView.register(WeatherForecastTableCell.self, forCellReuseIdentifier: ForecastCellIdentifier)
-        
+        rightTableView.register(WeatherForecastHeaderView.self, forHeaderFooterViewReuseIdentifier: ForecastHeaderIdentier)
     }
     
     func reloadData() {
@@ -95,5 +96,18 @@ extension WeatherContentView: UITableViewDelegate, UITableViewDataSource {
         } else if tableView == rightTableView {
             
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView == rightTableView {
+            guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ForecastHeaderIdentier) as? WeatherForecastHeaderView, let viewModel = self.vm else {return nil}
+            header.configureView(vm: viewModel)
+            return header
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return  tableView == rightTableView ? 100:0.00
     }
 }
