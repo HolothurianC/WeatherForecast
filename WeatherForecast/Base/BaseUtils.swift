@@ -7,6 +7,11 @@
 
 import UIKit
 
+
+let ScreenWidth  = UIScreen.main.bounds.size.width
+let ScreenHeight = UIScreen.main.bounds.size.height
+
+
 func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
     if let nav = base as? UINavigationController {
         return topViewController(base: nav.visibleViewController)
