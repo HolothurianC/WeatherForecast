@@ -10,19 +10,17 @@ import HandyJSON
 //https://lbs.amap.com/api/webservice/guide/api/weatherinfo
 //实况天气数据信息
 struct LivesModel: HandyJSON {
-    var lives: [LivesDetailModel]?
-}
-
-struct LivesDetailModel: HandyJSON {
     var province: String? //省份名
     var city: String?     //城市名
-    var adcode: String?   //区域编码
+    var adcode: Int?   //区域编码
     var weather: String?  //天气现象（汉字描述）
     var temperature: String? //实时气温，单位：摄氏度
+    var temperature_float: String? //实时气温，单位：摄氏度
     var winddirection: String? //风向描述
     var windpower: String? //风力级别，单位：级
-    var humidity: String? //空气湿度
     var reporttime: String? // 数据发布的时间
+    var humidity: Int? //空气湿度
+    var humidity_float: String?
 }
 
 //预报天气信息数据

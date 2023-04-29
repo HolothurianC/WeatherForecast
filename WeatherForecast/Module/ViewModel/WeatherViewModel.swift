@@ -32,41 +32,24 @@ class WeatherViewModel: NSObject {
         if selectIndex < weatherUrl.count {
             city = weatherUrl[selectIndex]
         }
-        if type == "base" {
-            WeatherNetworkLoading.requestLivesArr(target:
-                    .WeatherForLivesOrForecast(key: AmapKey,
-                                               city: city,
-                                               extensions: type,
-                                               output: "JSON"),
-                                          model: LivesModel.self)
-            { returnData, returnCode, error in
-                if returnCode == ReturnCode.dataSuccess.rawValue {
-                    self.successClosure?("Success")
-                    self.livesModels = returnData
+        let model: HandyJSON.Type = type == "base" ? LivesModel.self : ForecastModel.self
+        WeatherNetworkLoading.requestLivesArr(target:
+                .WeatherForLivesOrForecast(key: AmapKey,
+                                           city: city,
+                                           extensions: type,
+                                           output: "JSON"),
+                                              model: model)
+        { returnData, returnCode, error in
+            if returnCode == ReturnCode.dataSuccess.rawValue {
+                self.successClosure?("Success")
+                if type == "base" {
+                    self.livesModels = returnData as? [LivesModel]
                 } else {
-                    self.failureClosure?("Failure")
+                    self.forecastModels = returnData as? [ForecastModel]
                 }
-            }
-        } else {
-            WeatherNetworkLoading.requestForecastArr(target:
-                    .WeatherForLivesOrForecast(key: AmapKey,
-                                               city: city,
-                                               extensions: type,
-                                               output: "JSON"),
-                                          model: ForecastModel.self)
-            { returnData, returnCode, error in
-                if returnCode == ReturnCode.dataSuccess.rawValue {
-                    self.successClosure?("Success")
-                    self.forecastModels = returnData
-                } else {
-                    self.failureClosure?("Failure")
-                }
-                
+            } else {
+                self.failureClosure?("Failure")
             }
         }
-        
-        
-        
     }
-    
 }
