@@ -17,19 +17,18 @@ class WeatherForecastViewController: UIViewController {
     }
     
     private func configureViewModel() {
-        vm = WeatherViewModel(success: { successMsg in
-            PrintLog(message: successMsg)
+        vm = WeatherViewModel(lives: { lives in
+            
+        }, forecast: { forecasts in
+            
         }, failure: { errorMsg in
             PrintLog(message: errorMsg)
         })
-        vm?.loadDataSource("base")
+        vm?.mergeConcurrency()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        let index = arc4random() % 6
-        vm?.selectIndex = Int(index)
-        vm?.loadDataSource(index > 0 ? "all": "base")
     }
 
 }
